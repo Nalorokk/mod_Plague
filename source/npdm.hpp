@@ -1,27 +1,4 @@
-#include <inttypes.h>
-#include <switch.h>
-
-typedef struct{
-	u64 tid;
-	u8 type;
-	u8 unk1;
-	u8 zeroes[6];
-	u8 unk2;
-	u8 zeroes2[7];
-} AppRecord;
-
-
-typedef struct{
-	u64 tid;
-	u8 type;
-	u8 unk1;
-	u8 zeroes[6];
-	u8 unk2;
-	u8 zeroes2[7];
-} AppRecords[10];
-
-
-        typedef struct {
+        struct NpdmHeader {
             u32 magic;
             u32 _0x4;
             u32 _0x8;
@@ -38,8 +15,8 @@ typedef struct{
             u32 aci0_size;
             u32 acid_offset;
             u32 acid_size;
-        } NpdmHeader;
-        typedef struct {
+        };
+        struct NpdmAcid {
             u8 signature[0x100];
             u8 modulus[0x100];
             u32 magic;
@@ -55,8 +32,8 @@ typedef struct{
             u32 kac_offset;
             u32 kac_size;
             u64 padding;
-        } NpdmAcid;
-        typedef struct {
+        };
+        struct NpdmAci0 {
             u32 magic;
             u8 _0x4[0xC];
             u64 title_id;
@@ -68,8 +45,8 @@ typedef struct{
             u32 kac_offset;
             u32 kac_size;
             u64 padding;
-        } NpdmAci0;
-        typedef struct {
+        };
+        struct NpdmInfo {
             NpdmHeader *header;
             NpdmAcid *acid;
             NpdmAci0 *aci0;
@@ -80,8 +57,13 @@ typedef struct{
             void *aci0_sac;
             void *aci0_kac;
             u64 title_id;
-        } NpdmInfo;
-        typedef struct {
+        };
+        struct NpdmCache {
             NpdmInfo info;
             u8 buffer[0x8000];
-        } NpdmCache;
+        };
+
+
+
+void patch_npdm(char* path, u64 new_tid);
+int write_lfs(char* path, u64 new_tid);

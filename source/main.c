@@ -5,55 +5,30 @@
 #include <inttypes.h>
 
 #include "menu.h"
-#include "dump.h"
 #include "install.h"
 #include "apprec.h"
 #include "utils.h"
+#include "types.h"
+#include "npdm.cpp"
+#include "plague.h"
+
+void pressAtoContinue() {
+    printf("Press A to continue\n");
+
+    while(1) {
+            hidScanInput();
+            u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+            if (kDown & KEY_A)
+            {
+                printf("continue...\n");
+                consoleClear();
+                break;
+            }
+
+        }
+}
 
 int main(int argc, char **argv) {
-    
-    //Dumping tools menu
-    ment_t ment_dump[] = {
-        MDEF_BACK(),
-        MDEF_HANDLER("Dump card CXI", dump_cxi),
-        MDEF_HANDLER("Dump card NCAs", dump_nca),
-        MDEF_END()
-    };
-
-    menu_t menu_dump = {
-        ment_dump,
-        "Dumping", 0, 0
-    };
-    
-    //Application records menu
-    ment_t ment_apprec[] = {
-        MDEF_BACK(),
-        MDEF_HANDLER("List record", listAppRec),
-        MDEF_HANDLER("Push record", pushAppRec),
-        MDEF_HANDLER("Remove record", removeAppRec),
-        MDEF_HANDLER("Delete redundant records", deleteRedunAppRec),
-        MDEF_END()
-    };
-
-    menu_t menu_apprec = {
-        ment_apprec,
-        "Application Records", 0, 0
-    };
-    
-    //Main menu
-    ment_t ment_top[] = {
-        MDEF_HANDLER("Install", install),
-        MDEF_MENU("Dumping Tools", &menu_dump),
-        MDEF_MENU("Application records", &menu_apprec),
-        MDEF_CAPTION("----------", YELLOW),
-        MDEF_HANDLER("Quit", NULL),
-        MDEF_END()
-    };
-    
-    menu_t menu_top = {
-        ment_top,
-        "BogInstaller - v0.1", 0, 0
-    };
     
     gfxInitDefault();
     consoleInit(NULL);
@@ -61,7 +36,47 @@ int main(int argc, char **argv) {
     fsInitialize();
     
     while(appletMainLoop()) {
-        DrawMenu(&menu_top);
+        //DrawMenu(&menu_top);
+
+        u64 currentTitle = optionalTitle();
+
+        char path[50] = "";
+        optionalPath(path);
+
+            consoleClear();
+            printf("This is Atmosphere mod Plague backup selector by NermaN\n");
+
+            if(currentTitle > 0) {
+                printf("Current donor title: %016lx\n", currentTitle);
+            } else {
+                printf("Current donor title: none\n");
+            }
+
+            printf("Current path: '%s'\n", path);
+
+            npdm_info(path);
+
+            pressAtoContinue();
+        
+
+
+        u64 selectedApp = DrawAppList();
+
+        printf("selected app: %016lx\n", selectedApp);
+        pressAtoContinue();
+
+        char folder[100] = "";
+
+        DrawBackupList(folder);
+
+         patch_npdm(folder, selectedApp);
+         write_lfs(folder, selectedApp);
+
+
+
+        pressAtoContinue();
+
+        
         
         gfxFlushBuffers();
         gfxSwapBuffers();

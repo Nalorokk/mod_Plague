@@ -5,6 +5,7 @@ void waitOnKey(u32 key) {
     while(!(hidKeysDown(CONTROLLER_P1_AUTO) & key)) hidScanInput();
 }
 
+
 void DrawMenu(menu_t *menu) {
     int idx = 0, cnt = 0;
     int prev_idx = 0;

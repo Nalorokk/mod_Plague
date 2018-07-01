@@ -36,7 +36,7 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
-APP_AUTHOR	:= 	Rei
+APP_AUTHOR	:= 	NermaN
 APP_VERSION	:=	0.1
 #ROMFS	:=	romfs
 
