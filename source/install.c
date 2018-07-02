@@ -126,7 +126,17 @@ static Result _nsGetInterface(Service* srv_out, u64 cmd_id) {
     return rc;
 }
 
-
+u64 waitForKey() {
+    u64 prevKey = hidKeysDown(CONTROLLER_P1_AUTO), currKey = 0, heldKey = 0;
+    hidScanInput();
+    if(heldKey = hidKeysHeld(CONTROLLER_P1_AUTO)) {
+        if(heldKey & KEY_DUP || heldKey & KEY_DDOWN) {
+            return heldKey;
+        }
+    }
+    while((currKey = hidKeysDown(CONTROLLER_P1_AUTO)) == prevKey) hidScanInput();
+    return currKey;
+}
 
 u64 DrawAppList() {
 	Result rc=0;
@@ -179,8 +189,7 @@ u64 DrawAppList() {
 
         printf("\n");
 
-        hidScanInput();
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kDown = waitForKey();
 
         if (kDown & KEY_DDOWN && idx < (cnt - 1))
             idx++;
@@ -242,8 +251,7 @@ u64 DrawBackupList(char *folder) {
 
         printf("\n");
 
-        hidScanInput();
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kDown = waitForKey();
 
         if (kDown & KEY_DDOWN && idx < (cnt - 1))
             idx++;
