@@ -13,11 +13,10 @@
 #include "plague.h"
 
 void pressAtoContinue() {
-    printf("Press A to continue\n");
+    printf("\n\x1b[%dmPress A to continue\x1b[0m\n", GREEN);
 
     while(1) {
-            hidScanInput();
-            u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+            u64 kDown = waitForKey();
             if (kDown & KEY_A)
             {
                 printf("continue...\n");
@@ -44,7 +43,7 @@ int main(int argc, char **argv) {
         optionalPath(path);
 
             consoleClear();
-            printf("This is Atmosphere mod Plague backup selector by NermaN\n");
+            printf("\x1b[%dmAtmosphere mod Plague backup selector by NermaN\x1b[0m\n\n", RED);
 
             if(currentTitle > 0) {
                 printf("Current donor title: %016lx\n", currentTitle);
@@ -55,6 +54,7 @@ int main(int argc, char **argv) {
             printf("Current path: '%s'\n", path);
 
             npdm_info(path);
+
 
             pressAtoContinue();
         
