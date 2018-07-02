@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 #include <switch.h>
 
 void ResultStr(int code);
