@@ -37,7 +37,7 @@ DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
 APP_AUTHOR	:= 	NermaN
-APP_VERSION	:=	0.3
+APP_VERSION	:=	0.3.1
 #ROMFS	:=	romfs
 
 #---------------------------------------------------------------------------------

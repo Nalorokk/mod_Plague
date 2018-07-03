@@ -158,7 +158,7 @@ u64 DrawAppList() {
 	u64 entries[100];
 	char titles[100][100];
 
-	for (int i = 0; i < 50; ++i) {
+	for (int i = 0; i < 30; ++i) {
 		rc = nssListApplicationRecord(i, buf, sizeof(AppRecord), &outsize);
 		if (R_FAILED(rc)) {
 			printf("nsListApplicationRecord: Failed\n");
@@ -184,7 +184,6 @@ u64 DrawAppList() {
 
         for (cnt = 0; cnt < actualEntries; cnt++) {
             printf("\x1b[%dm %s - %016lx \x1b[0m\n", cnt == idx ? GREEN : WHITE,titles[cnt] , entries[cnt]);
-            printf(" \n");
         }
 
         printf("\n");
