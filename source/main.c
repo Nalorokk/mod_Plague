@@ -23,6 +23,15 @@ void pressAtoContinue() {
                 consoleClear();
                 break;
             }
+            if (kDown & KEY_PLUS) //Plus to exit into hbmenu
+            {
+            	nsExit();
+			    gfxExit();
+			    fsExit();
+                exit(0);
+                while(1) {
+                }
+            }
 
         }
 }
